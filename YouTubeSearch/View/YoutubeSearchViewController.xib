@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina5_5" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="YoutubeSearchViewController" customModule="YouTubeSearch" customModuleProvider="target">
+            <connections>
+                <outlet property="myTableView" destination="BvI-Et-kHr" id="1Ot-El-Smv"/>
+                <outlet property="myWebView" destination="xZf-tQ-bbx" id="Sev-uA-ybO"/>
+                <outlet property="txtSearch" destination="zjS-WE-bxT" id="6rW-vk-Vc9"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <searchBar contentMode="redraw" placeholder="Search" translatesAutoresizingMaskIntoConstraints="NO" id="zjS-WE-bxT">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="51"/>
+                    <textInputTraits key="textInputTraits"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="iq4-67-d4I"/>
+                    </connections>
+                </searchBar>
+                <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xZf-tQ-bbx">
+                    <rect key="frame" x="0.0" y="51" width="414" height="685"/>
+                    <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <wkWebViewConfiguration key="configuration">
+                        <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                        <wkPreferences key="preferences"/>
+                    </wkWebViewConfiguration>
+                </wkWebView>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="BvI-Et-kHr">
+                    <rect key="frame" x="0.0" y="51" width="414" height="685"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                </tableView>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="xZf-tQ-bbx" secondAttribute="bottom" id="8y6-fn-IRd"/>
+                <constraint firstItem="xZf-tQ-bbx" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="DAT-eB-7Ro"/>
+                <constraint firstItem="xZf-tQ-bbx" firstAttribute="top" secondItem="zjS-WE-bxT" secondAttribute="bottom" id="G5d-kZ-oQh"/>
+                <constraint firstItem="zjS-WE-bxT" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="ID1-ae-9YS"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="BvI-Et-kHr" secondAttribute="trailing" id="IvO-qB-MJ9"/>
+                <constraint firstItem="BvI-Et-kHr" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="J1O-Tv-IAI"/>
+                <constraint firstItem="zjS-WE-bxT" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="NAv-M2-0Kq"/>
+                <constraint firstItem="zjS-WE-bxT" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="fNi-7m-3NS"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="xZf-tQ-bbx" secondAttribute="trailing" id="tMj-ne-eJB"/>
+                <constraint firstItem="BvI-Et-kHr" firstAttribute="top" secondItem="zjS-WE-bxT" secondAttribute="bottom" id="tgK-0N-nxu"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="BvI-Et-kHr" secondAttribute="bottom" id="zub-3L-J5b"/>
+            </constraints>
+            <point key="canvasLocation" x="137.68115942028987" y="113.31521739130436"/>
+        </view>
+    </objects>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
