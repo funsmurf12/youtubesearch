@@ -18,6 +18,10 @@
 		2E82006B2883CCBD00B9FBBC /* YoutubeSearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E8200692883CCBD00B9FBBC /* YoutubeSearchTableViewCell.swift */; };
 		2E82006C2883CCBD00B9FBBC /* YoutubeSearchTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2E82006A2883CCBD00B9FBBC /* YoutubeSearchTableViewCell.xib */; };
 		2E82006F2883CD1F00B9FBBC /* NSObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E82006E2883CD1E00B9FBBC /* NSObject.swift */; };
+		2EAFE4A4288456FC00B332FE /* NetworkConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAFE4A3288456FC00B332FE /* NetworkConstants.swift */; };
+		2EAFE4A7288457A600B332FE /* YoutubeRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAFE4A6288457A600B332FE /* YoutubeRouter.swift */; };
+		2EAFE4AB28847D2400B332FE /* YoutubeVideoDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAFE4A928847D2400B332FE /* YoutubeVideoDetailViewController.swift */; };
+		2EAFE4AC28847D2400B332FE /* YoutubeVideoDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2EAFE4AA28847D2400B332FE /* YoutubeVideoDetailViewController.xib */; };
 		2EEA04942883EF680026E5A4 /* YoutubeSearchPretenser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EEA04932883EF680026E5A4 /* YoutubeSearchPretenser.swift */; };
 		345C600162EE7BEF309B0467 /* Pods_YouTubeSearch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56F5790E5F8F8B52DD1BFD66 /* Pods_YouTubeSearch.framework */; };
 /* End PBXBuildFile section */
@@ -37,6 +41,10 @@
 		2E8200692883CCBD00B9FBBC /* YoutubeSearchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YoutubeSearchTableViewCell.swift; sourceTree = "<group>"; };
 		2E82006A2883CCBD00B9FBBC /* YoutubeSearchTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = YoutubeSearchTableViewCell.xib; sourceTree = "<group>"; };
 		2E82006E2883CD1E00B9FBBC /* NSObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSObject.swift; sourceTree = "<group>"; };
+		2EAFE4A3288456FC00B332FE /* NetworkConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkConstants.swift; sourceTree = "<group>"; };
+		2EAFE4A6288457A600B332FE /* YoutubeRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YoutubeRouter.swift; sourceTree = "<group>"; };
+		2EAFE4A928847D2400B332FE /* YoutubeVideoDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YoutubeVideoDetailViewController.swift; sourceTree = "<group>"; };
+		2EAFE4AA28847D2400B332FE /* YoutubeVideoDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = YoutubeVideoDetailViewController.xib; sourceTree = "<group>"; };
 		2EEA04932883EF680026E5A4 /* YoutubeSearchPretenser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YoutubeSearchPretenser.swift; sourceTree = "<group>"; };
 		56F5790E5F8F8B52DD1BFD66 /* Pods_YouTubeSearch.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_YouTubeSearch.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6369E711B52940A1B3AE01FF /* Pods-YouTubeSearch.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YouTubeSearch.release.xcconfig"; path = "Target Support Files/Pods-YouTubeSearch/Pods-YouTubeSearch.release.xcconfig"; sourceTree = "<group>"; };
@@ -84,6 +92,8 @@
 		2E82004B2883C7D900B9FBBC /* YouTubeSearch */ = {
 			isa = PBXGroup;
 			children = (
+				2EAFE4A52884576F00B332FE /* Network */,
+				2EAFE4A2288456F100B332FE /* Constants */,
 				2E82006D2883CD0D00B9FBBC /* Extensions */,
 				2E8200602883CC2800B9FBBC /* View */,
 				2E82004C2883C7D900B9FBBC /* AppDelegate.swift */,
@@ -100,10 +110,8 @@
 		2E8200602883CC2800B9FBBC /* View */ = {
 			isa = PBXGroup;
 			children = (
-				2E8200682883CCA700B9FBBC /* Cell */,
-				2E8200612883CC3A00B9FBBC /* YoutubeSearchViewController.swift */,
-				2E8200622883CC3A00B9FBBC /* YoutubeSearchViewController.xib */,
-				2EEA04932883EF680026E5A4 /* YoutubeSearchPretenser.swift */,
+				2EAFE4AD2884812500B332FE /* YoutubeSearch */,
+				2EAFE4A828847CFB00B332FE /* YoutubeVideoDetail */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -123,6 +131,42 @@
 				2E82006E2883CD1E00B9FBBC /* NSObject.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		2EAFE4A2288456F100B332FE /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				2EAFE4A3288456FC00B332FE /* NetworkConstants.swift */,
+			);
+			path = Constants;
+			sourceTree = "<group>";
+		};
+		2EAFE4A52884576F00B332FE /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				2EAFE4A6288457A600B332FE /* YoutubeRouter.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		2EAFE4A828847CFB00B332FE /* YoutubeVideoDetail */ = {
+			isa = PBXGroup;
+			children = (
+				2EAFE4A928847D2400B332FE /* YoutubeVideoDetailViewController.swift */,
+				2EAFE4AA28847D2400B332FE /* YoutubeVideoDetailViewController.xib */,
+			);
+			path = YoutubeVideoDetail;
+			sourceTree = "<group>";
+		};
+		2EAFE4AD2884812500B332FE /* YoutubeSearch */ = {
+			isa = PBXGroup;
+			children = (
+				2E8200682883CCA700B9FBBC /* Cell */,
+				2E8200612883CC3A00B9FBBC /* YoutubeSearchViewController.swift */,
+				2EEA04932883EF680026E5A4 /* YoutubeSearchPretenser.swift */,
+				2E8200622883CC3A00B9FBBC /* YoutubeSearchViewController.xib */,
+			);
+			path = YoutubeSearch;
 			sourceTree = "<group>";
 		};
 		523DD2BD4B6F422DBDDC2C3D /* Frameworks */ = {
@@ -196,6 +240,7 @@
 				2E8200592883C7DB00B9FBBC /* LaunchScreen.storyboard in Resources */,
 				2E8200562883C7DB00B9FBBC /* Assets.xcassets in Resources */,
 				2E8200642883CC3A00B9FBBC /* YoutubeSearchViewController.xib in Resources */,
+				2EAFE4AC28847D2400B332FE /* YoutubeVideoDetailViewController.xib in Resources */,
 				2E8200542883C7D900B9FBBC /* Main.storyboard in Resources */,
 				2E82006C2883CCBD00B9FBBC /* YoutubeSearchTableViewCell.xib in Resources */,
 			);
@@ -250,13 +295,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2EAFE4A4288456FC00B332FE /* NetworkConstants.swift in Sources */,
 				2EEA04942883EF680026E5A4 /* YoutubeSearchPretenser.swift in Sources */,
 				2E8200512883C7D900B9FBBC /* ViewController.swift in Sources */,
+				2EAFE4A7288457A600B332FE /* YoutubeRouter.swift in Sources */,
 				2E82004D2883C7D900B9FBBC /* AppDelegate.swift in Sources */,
 				2E8200632883CC3A00B9FBBC /* YoutubeSearchViewController.swift in Sources */,
 				2E82006F2883CD1F00B9FBBC /* NSObject.swift in Sources */,
 				2E82004F2883C7D900B9FBBC /* SceneDelegate.swift in Sources */,
 				2E82006B2883CCBD00B9FBBC /* YoutubeSearchTableViewCell.swift in Sources */,
+				2EAFE4AB28847D2400B332FE /* YoutubeVideoDetailViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

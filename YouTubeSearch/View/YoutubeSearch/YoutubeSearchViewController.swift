@@ -10,32 +10,35 @@ import WebKit
 import SwiftSoup
 
 class YoutubeSearchViewController: UIViewController {
-    
     var pagesLabel = "1"
     var contentSize: CGSize = .zero
     
+    private var isLoadingMore: Bool = false
+    private var isSearching: Bool = false
+    
     @IBOutlet weak var myWebView: WKWebView!
-    var webView: WKWebView!
     @IBOutlet weak var myTableView: UITableView!
     @IBOutlet weak var txtSearch: UISearchBar!
-    var presenter: YoutubeSearchProcol?
+    @IBOutlet weak var indicatorView: UIActivityIndicatorView!
+    
+    var presenter: YoutubeSearchProtocol?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         presenter = YoutubeSearchPresenter(view: self)
         setupWebView()
+        setupTableView()
     }
     
     private func setupWebView() {
-        let link = URL(string:"https://www.youtube.com/results?search_query=ronaldo")!
-        let request = URLRequest(url: link)
         myWebView.customUserAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/601.6.17 (KHTML, like Gecko) Version/9.1.1 Safari/601.6.17"
         myWebView.navigationDelegate = self
         myWebView.allowsBackForwardNavigationGestures = true
         myWebView.scrollView.delegate = self
-        myWebView.load(request)
         myWebView.scrollView.addObserver(self, forKeyPath: #keyPath(UIScrollView.contentSize), options: .new, context: nil)
-        
+    }
+    
+    private func setupTableView() {
         self.myTableView.dataSource = self
         self.myTableView.delegate = self
         self.myTableView.register(nibWithCellClass: YoutubeSearchTableViewCell.self, at: Self.self)
@@ -45,10 +48,21 @@ class YoutubeSearchViewController: UIViewController {
         if (keyPath == #keyPath(UIScrollView.contentSize)) {
             let contentSize = myWebView.scrollView.contentSize
             
-            if contentSize != self.contentSize {
+            if contentSize != self.contentSize && contentSize.height > self.contentSize.height && isLoadingMore {
+                
                 self.contentSize = contentSize
                 print(contentSize.height)
-                //need handle new data LoadMore
+                
+                self.myWebView.evaluateJavaScript("document.body.innerHTML", completionHandler: { (value: Any!, error: Error!) -> Void in
+                    if error != nil {
+                        return
+                    }
+                    if let result = value as? String {
+                        self.presenter?.parseHtml(htmlString: result)
+                        self.isLoadingMore = false
+                    }
+                })
+                
             }
         }
     }
@@ -73,14 +87,35 @@ extension YoutubeSearchViewController: UITableViewDataSource {
         return cell
     }
     
-    
 }
 
 extension YoutubeSearchViewController: YoutubeSearchView {
     func displayVideo() {
         DispatchQueue.main.async { [weak self] in
-            self?.myTableView.reloadData()
+            guard let `self` = self else { return }
+            if self.isSearching {
+                self.isSearching = false
+            } else {
+                self.indicatorView.stopAnimating()
+            }
+            self.myTableView.reloadData()
         }
+    }
+    
+    func startSearch() {
+        self.isSearching = true
+        self.indicatorView.startAnimating()
+        let searchString = YoutubeRouter.result.url + "?search_query=" + (txtSearch.text ?? "")
+        self.isLoadingMore = true
+        myWebView.evaluateJavaScript("window.location = '\(searchString)';") { _, _ in
+            print("loaded")
+        }
+    }
+    
+    func showAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+        present(alert, animated: true, completion: nil)
     }
 }
 
@@ -88,48 +123,26 @@ extension YoutubeSearchViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 200
     }
-}
-
-extension YoutubeSearchViewController: UIScrollViewDelegate {
-    // MARK: - webView Scroll View
     
-    //    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-    //        self.stoppedScrolling()
-    //    }
-    //
-    //    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-    //        if !decelerate {
-    //            self.stoppedScrolling()
-    //        }
-    //    }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        if let videoId = presenter?.movieIdForRowIndexPath(indexPath: indexPath) {
+            let detailVC = YoutubeVideoDetailViewController(nibName: YoutubeVideoDetailViewController.name(), bundle: nil)
+            detailVC.videoId = videoId
+            navigationController?.pushViewController(detailVC, animated: true)
+        } else {
+            showAlert(title: "Notification", message: "An error occur with this video. Please try another one")
+        }
+    }
     
-    //    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-    //        var currentPage = Int((myWebView.scrollView.contentOffset.x / myWebView.scrollView.frame.size.width) + 1)
-    //        let pageCount = Int(myWebView.scrollView.contentSize.width / myWebView.scrollView.frame.size.width)
-    //
-    //        if currentPage == 0 {
-    //            currentPage = 1
-    //        } else {
-    //
-    //        }
-    //
-    //        if !myWebView.isHidden {
-    //            pagesLabel = "\( currentPage ) - \( pageCount )"
-    //        } else {
-    //            pagesLabel = ""
-    //        }
-    //        print("My current page: \(pagesLabel)")
-    //    }
-    
-    //    func scrollViewWillBeginZooming(_ scrollView: UIScrollView, with view: UIView?) {
-    //        myWebView.scrollView.pinchGestureRecognizer?.isEnabled = false
-    //    }
-    
-    //    func stoppedScrolling() {
-    //        let pageToLoad = Int((myWebView.scrollView.contentOffset.x))
-    //        UserDefaults.standard.set(pageToLoad, forKey: "pageToLoad")
-    //    }
-    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        guard let numberCells = self.presenter?.numbersVideoInSection else { return }
+        if indexPath.row == numberCells - 1 && numberCells > 0 {
+            self.isLoadingMore = true
+            self.indicatorView.startAnimating()
+            self.needToLoadMore()
+        }
+    }
 }
 
 extension YoutubeSearchViewController: WKNavigationDelegate {
@@ -147,18 +160,10 @@ extension YoutubeSearchViewController: WKNavigationDelegate {
 
 
 extension YoutubeSearchViewController: UISearchBarDelegate {
-    //    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-    //        searchBar.resignFirstResponder()
-    //    }
-    
-    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        if let content = searchBar.text, content != "" {
-            self.contentSize = .zero
-            let url = URL(string:"https://www.youtube.com/results?search_query=\(content)")!
-            self.myWebView.load(URLRequest(url: url))
-            //Need to reset tableView data
-        }
-        
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+        presenter?.clearData()
+        startSearch()
     }
 }
 
@@ -170,7 +175,6 @@ extension UITableView {
         if let bundleName = bundleClass {
             bundle = Bundle(for: bundleName)
         }
-        
         register(UINib(nibName: identifier, bundle: bundle), forCellReuseIdentifier: identifier)
     }
 }

@@ -22,6 +22,11 @@ class YoutubeSearchTableViewCell: UITableViewCell {
     private static func typeName(_ some: Any) -> String {
         return (some is Any.Type) ? "\(some)" : "\(type(of: some))"
     }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.myImv.image = nil
+    }
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -36,7 +41,11 @@ class YoutubeSearchTableViewCell: UITableViewCell {
     
     func configCell(url: String) {
         guard let videoThumb = URL(string: url) else { return }
-        myImv.kf.setImage(with: videoThumb, options: [.fromMemoryCacheOrRefresh])
+        
+        let scale = UIScreen.main.scale
+        let resizingProcessor = ResizingImageProcessor(referenceSize: CGSize(width: self.myImv.frame.width * scale, height: self.myImv.frame.height * scale))
+        
+        myImv.kf.setImage(with: videoThumb, options: [.processor(resizingProcessor),.fromMemoryCacheOrRefresh])
     }
     
 }
